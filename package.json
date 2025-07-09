@@ -1,0 +1,51 @@
+{
+  "name": "storestuff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "prisma": "prisma",
+    "prisma:studio": "prisma studio --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:generate": "prisma generate --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:format": "prisma format --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:validate": "prisma validate --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:deploy": "prisma migrate deploy --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:reset": "prisma migrate reset --force --schema=src/infrastructure/prisma/schema.prisma",
+    "prisma:db:push": "prisma db push --schema=src/infrastructure/prisma/schema.prisma",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/jsonwebtoken": "^9.0.9",
+    "axios": "^1.10.0",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.6.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "pg": "^8.14.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.13.17",
+    "@types/pg": "^8.11.11",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2"
+  }
+}

@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model File {
+  fileId    String   @id @default(uuid())
+  userId    String
+  spaceId   String
+  folderId  String?
+  name      String
+  publicId  String
+  type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+
+  folder Folder? @relation("FolderFiles", fields: [folderId], references: [folderId], onDelete: Cascade) // changed
+  space  Space   @relation(fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Folder {
+  folderId   String    @id @default(uuid())
+  name       String
+  spaceId    String
+  userId     String
+  parentId   String?
+  folderPath String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+
+  space    Space   @relation("SpaceFolders", fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  rootOf   Space?  @relation("RootFolder")
+  user     User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  parent   Folder? @relation("FolderHierarchy", fields: [parentId], references: [folderId], onDelete: Cascade) // changed
+  children Folder[] @relation("FolderHierarchy")
+  files    File[]   @relation("FolderFiles")
+}
+
+
+model Invitation {
+  invitationId   String   @id @default(uuid())
+  spaceId        String
+  recipientEmail String
+  status         String
+  role           String
+
+  space Space @relation(fields: [spaceId], references: [spaceId], onDelete: Cascade)
+}
+
+
+model Space {
+  spaceId   String   @id @default(uuid())
+  creatorId String
+  name      String
+  createdAt DateTime @default(now())
+  folderId  String?  @unique
+  folder    Folder?  @relation("RootFolder", fields: [folderId], references: [folderId], onDelete: SetNull)
+
+  creator     User           @relation("CreatedSpaces", fields: [creatorId], references: [userId], onDelete: Cascade)
+  folders     Folder[]       @relation("SpaceFolders")
+  files       File[]
+  invitations Invitation[]
+  members     SpaceMember[]
+}
+
+model SpaceMember {
+  spaceId  String
+  userId   String
+  roles    String
+  joinDate DateTime @default(now())
+
+  space Space @relation(fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@id([spaceId, userId])
+}
+
+model User {
+  userId           String    @id @default(uuid())
+  username         String    @unique
+  email            String    @unique
+  hashedPassword   String
+  status           String    @default("active")
+  suspensionExpiry DateTime?
+
+  createdSpaces       Space[]       @relation("CreatedSpaces")
+  files               File[]
+  spaceMembers        SpaceMember[]
+  folders             Folder[]
+}
