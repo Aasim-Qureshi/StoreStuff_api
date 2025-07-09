@@ -120,8 +120,6 @@ Implemented:
 * Download functionality
 
 In Progress:
-
-* Authentication middleware
 * Role-based permissions
 * File previews and thumbnails
 
