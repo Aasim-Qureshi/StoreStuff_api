@@ -11,7 +11,7 @@ authRouter.post("/create", authController.create);
 authRouter.post("/login", authController.login);
 authRouter.post("/logout", authController.logout);
 
-authRouter.get("/:uid", authController.getUserById);
 authRouter.get("/me", AuthenticateUser, authController.me);
+authRouter.get("/:uid", authController.getUserById);
 
 export default authRouter;
