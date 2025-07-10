@@ -9,13 +9,14 @@ dotenv.config();
 
 const app: Express = express();
 
-app.use(cookieParser());
-
 app.use(
     cors({
         origin: process.env.CORS_ORIGIN?.split(',') || '*',
         credentials: true,
 }));
+
+app.use(cookieParser());
+
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
