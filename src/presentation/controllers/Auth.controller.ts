@@ -69,8 +69,6 @@ export class AuthController {
             sameSite: 'none',
         });
 
-
-
         ResponseHandler.success(res, "User logged in successfully", 200, user);
     });
 
@@ -80,6 +78,19 @@ export class AuthController {
 
         ResponseHandler.success(res, "User found: ", 200, user);
     })
+
+    me = catchAsync(async (req: Request, res: Response) => {
+        const userId = req.userId;
+
+        if (!userId) {
+            return ResponseHandler.error(res, "User not authenticated", 401);
+        }
+
+        const user = await this.getUserByIdUseCase.execute(userId);
+
+        ResponseHandler.success(res, "User retrieved", 200, user);
+    });
+
 
     logout = catchAsync(async (req: Request, res: Response) => {
         await this.logoutUseCase.execute(res);
