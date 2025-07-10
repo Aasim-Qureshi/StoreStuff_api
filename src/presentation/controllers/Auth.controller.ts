@@ -34,18 +34,18 @@ export class AuthController {
         const { username, email, password } = req.body;
 
         const hashedPassword = await PasswordService.hashPassword(password);
-    
+
         const signupDTO = new CreateUserDTO(
             username,
-            new EmailAddress(email), 
+            new EmailAddress(email),
             hashedPassword
         );
-    
+
         const user = await this.createUserUseCase.execute(signupDTO);
-    
+
         ResponseHandler.success(res, "User created successfully", 201, user);
     });
-    
+
     login = catchAsync(async (req: Request, res: Response) => {
 
         const { email, password } = req.body;
@@ -55,10 +55,21 @@ export class AuthController {
             password
         )
 
-        const {user, accessToken, refreshToken} = await this.loginUseCase.execute(loginDTO);
+        const { user, accessToken, refreshToken } = await this.loginUseCase.execute(loginDTO);
 
-        res.cookie("accessToken", accessToken);
-        res.cookie("refreshToken", refreshToken);
+        res.cookie("accessToken", accessToken ?? '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+
+        res.cookie("refreshToken", refreshToken ?? '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+
+
 
         ResponseHandler.success(res, "User logged in successfully", 200, user);
     });
