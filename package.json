@@ -1,10 +1,12 @@
 {
   "name": "storestuff",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Cloud storage API for the StoreStuff app",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
     "prisma": "prisma",
     "prisma:studio": "prisma studio --schema=src/infrastructure/prisma/schema.prisma",
     "prisma:generate": "prisma generate --schema=src/infrastructure/prisma/schema.prisma",
