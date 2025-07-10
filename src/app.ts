@@ -17,9 +17,7 @@ const corsOptions = {
   credentials: true,
 };
 
-// 👇 FIX: Handle preflight requests before any route
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // <--- IMPORTANT for CORS to work
 
 app.use(cookieParser());
 app.use(express.json());
