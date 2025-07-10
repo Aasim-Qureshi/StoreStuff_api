@@ -9,11 +9,14 @@ dotenv.config();
 
 const app: Express = express();
 
-app.use(
-    cors({
-        origin: process.env.CORS_ORIGIN?.split(',') || '*',
-        credentials: true,
-}));
+const corsOptions = {
+  origin: 'https://store-stuff-ui.vercel.app',
+  credentials: true, // Allow cookies, authorization headers, etc.
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 
