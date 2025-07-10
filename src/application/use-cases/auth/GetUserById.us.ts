@@ -9,11 +9,13 @@ export class GetUserByIdUseCase {
 
     async execute(uuid: string): Promise<SafeUser | null> {
 
-        const user = this.authRepo.findUserById(uuid)
+        const user = await this.authRepo.findUserById(uuid)
 
         if(!user){
             throw new AppError("User not found", 404)
         }
+        
+        console.log("this is the user", user)
 
         return user
     }

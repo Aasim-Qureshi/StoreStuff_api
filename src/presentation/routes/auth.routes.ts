@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/Auth.controller";
 import { AuthRepoImpl } from "../../infrastructure/repositories/auth.impl";
+import { AuthenticateUser } from "../../shared/middleware/auth.middleware";
 
 const authRepo = new AuthRepoImpl();
 const authController = new AuthController(authRepo);
@@ -11,6 +12,6 @@ authRouter.post("/login", authController.login);
 authRouter.post("/logout", authController.logout);
 
 authRouter.get("/:uid", authController.getUserById);
-authRouter.get("/me", authController.me);
+authRouter.get("/me", AuthenticateUser, authController.me);
 
 export default authRouter;

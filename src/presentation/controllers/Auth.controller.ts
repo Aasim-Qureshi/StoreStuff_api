@@ -81,12 +81,15 @@ export class AuthController {
 
     me = catchAsync(async (req: Request, res: Response) => {
         const userId = req.userId;
+        
+        console.log("User ID from request:", userId);
 
         if (!userId) {
             return ResponseHandler.error(res, "User not authenticated", 401);
         }
 
         const user = await this.getUserByIdUseCase.execute(userId);
+        console.log(user)
 
         ResponseHandler.success(res, "User retrieved", 200, user);
     });
