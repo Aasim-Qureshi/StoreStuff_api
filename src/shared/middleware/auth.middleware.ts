@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtService } from "../../infrastructure/services/JWT.service";
 import { catchAsync } from "../utils/CatchAsync";
+import { cookieConfig } from "../../infrastructure/config/cookies.confg";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -30,12 +31,11 @@ export const AuthenticateUser = catchAsync(
         return;
       }
 
-      // Reissue tokens
       const newAccessToken = JwtService.generateAccessToken(decoded.userId, decoded.email);
       const newRefreshToken = JwtService.generateRefreshToken(decoded.userId, decoded.email);
 
-      res.cookie("accessToken", newAccessToken, { httpOnly: true });
-      res.cookie("refreshToken", newRefreshToken, { httpOnly: true });
+      res.cookie("accessToken", newAccessToken, cookieConfig);
+      res.cookie("refreshToken", newRefreshToken, cookieConfig);
     }
 
     if (decoded.userId && decoded.email) {

@@ -15,6 +15,7 @@ import { EmailAddress } from "../../domain/value-objects/email.vo";
 import { catchAsync } from "../../shared/utils/CatchAsync";
 import { ResponseHandler } from "../../shared/utils/ResponseHandler";
 import { PasswordService } from "../../infrastructure/services/Password.service";
+import { cookieConfig } from "../../infrastructure/config/cookies.confg";
 
 
 export class AuthController {
@@ -57,17 +58,8 @@ export class AuthController {
 
         const { user, accessToken, refreshToken } = await this.loginUseCase.execute(loginDTO);
 
-        res.cookie("accessToken", accessToken ?? '', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-        });
-
-        res.cookie("refreshToken", refreshToken ?? '', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-        });
+        res.cookie("accessToken", accessToken, cookieConfig)
+        res.cookie("refreshToken", refreshToken, cookieConfig);
 
         ResponseHandler.success(res, "User logged in successfully", 200, user);
     });
